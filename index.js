@@ -20,6 +20,8 @@
 */
 
 const todosWrapperElem = document.getElementById('todos');
+const addTodoButton = document.getElementById('add-todo');
+const todoInput = document.getElementById('todo');
 
 function displayTodos(todos) {
     for (todo of todos) {
@@ -52,6 +54,30 @@ async function getTodos() {
     displayTodos(data)
 }
 
+async function postTodo(todo) {
+    console.log('Todo att posta: ', todo);
 
+    //Objekt att skicka med i fetch, hur det ska se ut står i API-dokumentationen
+    const objToSend = {
+        task: todo
+    }
+
+    console.log('Objekt att posta: ', objToSend);
+    const response = await fetch('https://awesome-todo-api.herokuapp.com/tasks',
+    { method: 'POST', 
+      body: JSON.stringify(objToSend),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await response.json();
+    displayTodos(data);
+}
+
+addTodoButton.addEventListener('click', () => {
+    const todoToAdd = todoInput.value;
+    console.log('Text från inputfält: ', todoToAdd);
+    postTodo(todoToAdd);
+});
 
 getTodos();
