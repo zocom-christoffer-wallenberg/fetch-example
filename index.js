@@ -1,12 +1,22 @@
 //https://awesome-todo-api.herokuapp.com/tasks
 
 /*
+    Hämta todos
+
     1. Göra ett fetch-anrop mot awesome-todo-api och hämta todos
     2. För varje todo i array:en
         1. Skapa upp ett element
         2. Lägg till todo-text i elementet
         3. Lägg till elementet i DOM:en
 
+
+    Lägg till ny todo
+
+    1. Lägg till ett inputfält och en knapp med en event listener
+    2. När jag klickar på knappen så:
+        1. Hämta värdet från inputfältet och spara i en variabel
+        2. Gör ett fetch-anrop och skicka med texten i body som ett POST-anrop
+        3. Hämta alla todos igen (se Hämta todos ovan)
 */
 
 const todosWrapperElem = document.getElementById('todos');
@@ -41,5 +51,7 @@ async function getTodos() {
     const data = await response.json();
     displayTodos(data)
 }
+
+
 
 getTodos();
