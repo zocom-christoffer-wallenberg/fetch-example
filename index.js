@@ -17,6 +17,15 @@
         1. Hämta värdet från inputfältet och spara i en variabel
         2. Gör ett fetch-anrop och skicka med texten i body som ett POST-anrop
         3. Hämta alla todos igen (se Hämta todos ovan)
+
+
+    Ta bort todo
+
+    1. Lägg till id på li-tagg
+    2. När jag klickar på en todo
+        1. Hämta id och spara i en variabel
+        2. Gör ett fetch-anrop och skicka med id i url:en med metoden DELETE
+        3. Hämta alla todos igen (se Hämta todos ovan)
 */
 
 const todosWrapperElem = document.getElementById('todos');
@@ -28,6 +37,7 @@ function displayTodos(todos) {
         console.log('Todo: ', todo);
         const todoElem = document.createElement('li');
         todoElem.innerHTML = todo.task;
+        todoElem.setAttribute('todo-id', todo.id);
         console.log(todoElem);
         todosWrapperElem.append(todoElem);
 
@@ -35,6 +45,9 @@ function displayTodos(todos) {
             console.log(event);
             event.target.classList.toggle('done');
             console.log('Classlist: ', event.target.classList);
+            console.log('Todo-id: ', event.target.getAttribute('todo-id'));
+            const todoID = event.target.getAttribute('todo-id');
+            deleteTodo(todoID);
         });
     }
 
@@ -48,6 +61,7 @@ async function getTodos() {
     .then((response) => response.json())
     .then((data) => console.log(data))
     .catch((error) => console.log(error))*/
+    todosWrapperElem.innerHTML = '';
 
     const response = await fetch('https://awesome-todo-api.herokuapp.com/tasks');
     const data = await response.json();
@@ -72,6 +86,13 @@ async function postTodo(todo) {
     });
     const data = await response.json();
     displayTodos(data);
+}
+
+async function deleteTodo(id) {
+    const response = await fetch(`https://awesome-todo-api.herokuapp.com/tasks/${id}`,
+    { method: 'DELETE' });
+    const data = await response.json();
+    getTodos();
 }
 
 addTodoButton.addEventListener('click', () => {
